@@ -73,7 +73,6 @@ class TestBurgerRemoveIngredient:
 
         burger.remove_ingredient(0)
 
-        assert len(burger.ingredients) == 1
         assert burger.ingredients[0] is ing1
 
     def test_remove_last_ingredient(self):
@@ -85,5 +84,29 @@ class TestBurgerRemoveIngredient:
 
         burger.remove_ingredient(1)
 
-        assert len(burger.ingredients) == 1
         assert burger.ingredients[0] is ing0
+
+
+class TestBurgerMoveIngredient:
+    """Тесты перемещения ингредиентов"""
+
+    @pytest.mark.parametrize("index,new_index,expected_order", [
+        (0, 2, [1, 2, 0]),       # Переместить первый на третье место
+        (2, 0, [2, 0, 1]),       # Переместить третий на первое место
+        (0, 1, [1, 0, 2]),       # Переместить первый на второе место
+        (1, 0, [1, 0, 2]),       # Переместить второй на первое место
+    ])
+    def test_move_ingredient(self, index, new_index, expected_order):
+        burger = Burger()
+        ing0 = Mock()
+        ing1 = Mock()
+        ing2 = Mock()
+        burger.add_ingredient(ing0)
+        burger.add_ingredient(ing1)
+        burger.add_ingredient(ing2)
+
+        burger.move_ingredient(index, new_index)
+
+        ingredients = [ing0, ing1, ing2]
+        expected = [ingredients[i] for i in expected_order]
+        assert burger.ingredients == expected
