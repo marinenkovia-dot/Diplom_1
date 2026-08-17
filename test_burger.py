@@ -110,3 +110,68 @@ class TestBurgerMoveIngredient:
         ingredients = [ing0, ing1, ing2]
         expected = [ingredients[i] for i in expected_order]
         assert burger.ingredients == expected
+
+
+class TestBurgerGetPrice:
+    """Тесты расчёта цены"""
+
+    def test_get_price_without_ingredients(self):
+        burger = Burger()
+        bun = Mock()
+        bun.get_price.return_value = 50.0
+        burger.set_buns(bun)
+
+        assert burger.get_price() == 100.0
+
+    def test_get_price_one_ingredient(self):
+        burger = Burger()
+        bun = Mock()
+        bun.get_price.return_value = 50.0
+        burger.set_buns(bun)
+
+        ing = Mock()
+        ing.get_price.return_value = 50.0
+        burger.add_ingredient(ing)
+
+        assert burger.get_price() == 150.0
+
+    def test_get_price_two_ingredients(self):
+        burger = Burger()
+        bun = Mock()
+        bun.get_price.return_value = 50.0
+        burger.set_buns(bun)
+
+        ing1 = Mock()
+        ing1.get_price.return_value = 50.0
+        ing2 = Mock()
+        ing2.get_price.return_value = 30.0
+        burger.add_ingredient(ing1)
+        burger.add_ingredient(ing2)
+
+        assert burger.get_price() == 180.0
+
+    def test_get_price_three_ingredients(self):
+        burger = Burger()
+        bun = Mock()
+        bun.get_price.return_value = 50.0
+        burger.set_buns(bun)
+
+        ing1 = Mock()
+        ing1.get_price.return_value = 50.0
+        ing2 = Mock()
+        ing2.get_price.return_value = 30.0
+        ing3 = Mock()
+        ing3.get_price.return_value = 20.0
+        burger.add_ingredient(ing1)
+        burger.add_ingredient(ing2)
+        burger.add_ingredient(ing3)
+
+        assert burger.get_price() == 200.0
+
+    def test_get_price_different_bun_price(self):
+        burger = Burger()
+        bun = Mock()
+        bun.get_price.return_value = 45.0
+        burger.set_buns(bun)
+
+        assert burger.get_price() == 90.0
