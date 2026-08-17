@@ -15,3 +15,13 @@ class TestBurgerInit:
     def test_init_ingredients_is_empty(self):
         burger = Burger()
         assert burger.ingredients == []
+
+
+class TestBurgerSetBuns:
+    """Тест установки булочки"""
+
+    def test_set_buns(self):
+        burger = Burger()
+        bun = Mock()
+        burger.set_buns(bun)
+        assert burger.bun is bun
