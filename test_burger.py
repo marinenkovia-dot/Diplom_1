@@ -175,3 +175,56 @@ class TestBurgerGetPrice:
         burger.set_buns(bun)
 
         assert burger.get_price() == 90.0
+
+
+class TestBurgerGetReceipt:
+    """Тесты генерации чека"""
+
+    def test_get_receipt_without_ingredients(self):
+        burger = Burger()
+        bun = Mock()
+        bun.get_name.return_value = "Булочка"
+        bun.get_price.return_value = 50.0
+        burger.set_buns(bun)
+
+        receipt = burger.get_receipt()
+
+        assert "(==== Булочка ====)" in receipt and "Price: 100.0" in receipt
+
+    @pytest.mark.parametrize("ingredient_type", [
+        INGREDIENT_TYPE_SAUCE,
+        INGREDIENT_TYPE_FILLING,
+    ])
+    def test_get_receipt_with_ingredient(self, ingredient_type):
+        burger = Burger()
+        bun = Mock()
+        bun.get_name.return_value = "Булочка"
+        bun.get_price.return_value = 50.0
+        burger.set_buns(bun)
+
+        ing = Mock()
+        ing.get_name.return_value = "Кетчуп"
+        ing.get_price.return_value = 20.0
+        ing.get_type.return_value = ingredient_type
+        burger.add_ingredient(ing)
+
+        receipt = burger.get_receipt()
+
+        assert f'= {ingredient_type.lower()} Кетчуп =' in receipt and "Price: 120.0" in receipt
+
+    def test_get_receipt_format(self):
+        burger = Burger()
+        bun = Mock()
+        bun.get_name.return_value = "Тестовая булочка"
+        bun.get_price.return_value = 30.0
+        burger.set_buns(bun)
+
+        ing = Mock()
+        ing.get_name.return_value = "Тестовый ингредиент"
+        ing.get_price.return_value = 25.0
+        ing.get_type.return_value = INGREDIENT_TYPE_FILLING
+        burger.add_ingredient(ing)
+
+        receipt = burger.get_receipt()
+
+        assert receipt.split('\n') == ['(==== Тестовая булочка ====)', '= filling Тестовый ингредиент =', '(==== Тестовая булочка ====)', '', 'Price: 85.0']
