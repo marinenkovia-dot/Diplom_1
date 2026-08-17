@@ -25,3 +25,23 @@ class TestBurgerSetBuns:
         bun = Mock()
         burger.set_buns(bun)
         assert burger.bun is bun
+
+
+class TestBurgerAddIngredient:
+    """Тесты добавления ингредиентов"""
+
+    def test_add_ingredient(self):
+        burger = Burger()
+        ingredient = Mock()
+        burger.add_ingredient(ingredient)
+        assert burger.ingredients[0] is ingredient
+
+    def test_add_multiple_ingredients(self):
+        burger = Burger()
+        ing1 = Mock()
+        ing2 = Mock()
+        ing3 = Mock()
+        burger.add_ingredient(ing1)
+        burger.add_ingredient(ing2)
+        burger.add_ingredient(ing3)
+        assert burger.ingredients == [ing1, ing2, ing3]
