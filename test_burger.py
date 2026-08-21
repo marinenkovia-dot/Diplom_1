@@ -6,15 +6,17 @@ from praktikum.ingredient_types import INGREDIENT_TYPE_SAUCE, INGREDIENT_TYPE_FI
 
 
 class TestBurgerInit:
-    """Тесты инициализации класса Burger"""
+    """Тесты методов Burger без установленной булочки"""
 
-    def test_init_bun_is_none(self):
+    def test_get_price_raises_error_without_bun(self):
         burger = Burger()
-        assert burger.bun is None
+        with pytest.raises(AttributeError):
+            burger.get_price()
 
-    def test_init_ingredients_is_empty(self):
+    def test_get_receipt_raises_error_without_bun(self):
         burger = Burger()
-        assert burger.ingredients == []
+        with pytest.raises(AttributeError):
+            burger.get_receipt()
 
 
 class TestBurgerSetBuns:
